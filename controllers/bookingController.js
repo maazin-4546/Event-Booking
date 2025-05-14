@@ -173,8 +173,8 @@ const getAllBookings = async (req, res) => {
         }
 
         const bookings = await Booking.find(filter)
-            .populate('user', 'firstName lastName email')
-            .populate('event', 'title date location')
+            .populate('user', 'name email')
+            .populate('event', 'title location date')
             .sort({ createdAt: -1 });
 
         res.status(200).json({
@@ -205,7 +205,7 @@ const downloadTicketPDF = async (req, res) => {
         }
 
         // Authorization check
-        if (role !== 'admin' && booking.user.toString() !== userId.toString()) {
+        if (booking.user.toString() !== userId.toString()) {
             return res.status(403).json({ success: false, message: "Unauthorized" });
         }
 
